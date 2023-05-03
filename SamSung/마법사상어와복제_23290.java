@@ -77,7 +77,7 @@ public class 마법사상어와복제_23290 {
 
         while(fishNum-->0){
             Fish now_fish = fishs.poll();
-
+            boolean flag = false;
             for(int i=0; i<8; i++) {
                 int dirc = now_fish.d-i-1;
                 if(dirc < 0){
@@ -99,7 +99,11 @@ public class 마법사상어와복제_23290 {
                 map[now_fish.x][now_fish.y] -= 1;
                 map[nextX][nextY] += 1;
                 fishs.add(new Fish(nextX,nextY, dirc+1));
+                flag = true;
                 break;
+            }
+            if(!flag){
+                fishs.add(new Fish(now_fish.x, now_fish.y, now_fish.d));
             }
         }
 
@@ -108,6 +112,7 @@ public class 마법사상어와복제_23290 {
     static void sharkMove(){
 
         int count =0;
+        max = Integer.MIN_VALUE;
         orderby = "";
         dfs(count);
 
