@@ -12,16 +12,18 @@ public class 마법사상어와복제_23290 {
     static int[] dx= {0,-1,-1,-1,0,1,1,1};
     static int[] dy= {-1,-1,0,1,1,1,0,-1};
     static int M, S, S_1, sharkX, sharkY;
-    static int[][] map, smellMap,temp_map;
-    static Fish[][]  fish_map;
+    static int[][] map, smellMap;
     static Queue<Fish> fishs, temp_fishs;
+    static int [] sdx = {-1,0,1,0};
+    static int [] sdy = {0,-1,0,1};
+    static int fish_all_num, max = Integer.MIN_VALUE;
+    static StringBuilder sb = new StringBuilder();
+    static String orderby = "";
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         StringTokenizer st = new StringTokenizer(br.readLine(), " ");
         map = new int[4][4];
         smellMap = new int[4][4];
-        temp_map = new int[4][4];
-        fish_map = new Fish[4][4];
         M = Integer.parseInt(st.nextToken());
         S = Integer.parseInt(st.nextToken());
         S_1 = S;
@@ -57,6 +59,7 @@ public class 마법사상어와복제_23290 {
     }
 
     static void magic(){
+
         copyMagic();
         fishMove();
         sharkMove();
@@ -70,6 +73,13 @@ public class 마법사상어와복제_23290 {
             temp_fishs.add(one);
             fishs.add(one);
         }
+        /*System.out.println("copyMagic---------");
+        for(int i=0; i<4; i++){
+            for(int j=0; j<4; j++){
+                System.out.print(map[i][j]);
+            }
+            System.out.println();
+        }*/
     }
     static void fishMove(){
 
@@ -106,9 +116,17 @@ public class 마법사상어와복제_23290 {
                 fishs.add(new Fish(now_fish.x, now_fish.y, now_fish.d));
             }
         }
+        /*System.out.println("fishMove---------");
+        for(int i=0; i<4; i++){
+            for(int j=0; j<4; j++){
+                System.out.print(map[i][j]);
+            }
+            System.out.println();
+        }*/
 
     }
 
+    static int x1,x2,x3,y1,y2,y3;
     static void sharkMove(){
 
         int count =0;
@@ -116,38 +134,45 @@ public class 마법사상어와복제_23290 {
         orderby = "";
         dfs(count);
 
-        int x1,x2,x3,y1,y2,y3;
 
-        x1 = sharkX + sdx[Integer.parseInt(String.valueOf(orderby.charAt(0)))-1];
-        y1 = sharkY + sdy[Integer.parseInt(String.valueOf(orderby.charAt(0)))-1];
+        int one, two, three;
+        one = Integer.parseInt(String.valueOf(orderby.charAt(0)))-1;
+        two = Integer.parseInt(String.valueOf(orderby.charAt(1)))-1;
+        three = Integer.parseInt(String.valueOf(orderby.charAt(2)))-1;
+        x1 = sharkX + sdx[one];
+        y1 = sharkY + sdy[one];
 
-        x2 = x1 + sdx[Integer.parseInt(String.valueOf(orderby.charAt(1)))-1];
-        y2 = y1 + sdy[Integer.parseInt(String.valueOf(orderby.charAt(1)))-1];
+        x2 = x1 + sdx[two];
+        y2 = y1 + sdy[two];
 
-        x3 = x2 + sdx[Integer.parseInt(String.valueOf(orderby.charAt(2)))-1];
-        y3 = y2 + sdy[Integer.parseInt(String.valueOf(orderby.charAt(2)))-1];
+        x3 = x2 + sdx[three];
+        y3 = y2 + sdy[three];
 
-        if(map[x1][y1] >0) {
+        if(map[x1][y1] > 0) {
             smellMap[x1][y1] += 3;
             map[x1][y1] = 0;
         }
-        if(map[x2][y2] >0) {
+        if(map[x2][y2] > 0) {
             smellMap[x2][y2] += 3;
             map[x2][y2] = 0;
         }
-        if(map[x3][y3] >0) {
+        if(map[x3][y3] > 0) {
             smellMap[x3][y3] += 3;
             map[x3][y3] = 0;
         }
         sharkX = x3;
         sharkY = y3;
+        /*System.out.println("sharkMove---------");
+        System.out.println(one+" "+two+" "+three);
+        System.out.println("shark.r--"+sharkX+"shark.c --"+sharkY);
+        for(int i=0; i<4; i++){
+            for(int j=0; j<4; j++){
+                System.out.print(smellMap[i][j]);
+            }
+            System.out.println();
+        }*/
     }
 
-    static int [] sdx = {-1,0,1,0};
-    static int [] sdy = {0,1,0,-1};
-    static int fish_all_num, max = Integer.MIN_VALUE;
-    static StringBuilder sb = new StringBuilder();
-    static String orderby = "";
     static void dfs(int count){
 
         if(count >= 3){
@@ -208,10 +233,17 @@ public class 마법사상어와복제_23290 {
             for(int j=0; j<4; j++){
                 if(smellMap[i][j] > 0) {
                     smellMap[i][j] -= 1;
-                    map[i][j]=0;
+                    map[i][j] = 0;
                 }
             }
         }
+      /*  System.out.println("fishsmell---------");
+        for(int i=0; i<4; i++){
+            for(int j=0; j<4; j++){
+                System.out.print(smellMap[i][j]);
+            }
+            System.out.println();
+        }*/
     }
 
     static void copyMagic_done(){
@@ -219,7 +251,13 @@ public class 마법사상어와복제_23290 {
 
         for(int i=0; i<s; i++) {
             Fish one = fishs.poll();
-            if (smellMap[one.x][one.y] > 0) {
+            if (x1 == one.x && y1 == one.y) {
+                continue;
+            }
+            else if (x2 == one.x && y2 == one.y) {
+                continue;
+            }
+            else if (x3 == one.x && y3 == one.y) {
                 continue;
             }
             temp_fishs.add(one);
@@ -228,12 +266,17 @@ public class 마법사상어와복제_23290 {
         int n = temp_fishs.size();
         for(int i=0; i<n; i++){
             Fish one = temp_fishs.poll();
-            //if(smellMap[one.x][one.y]>0){
-            //    continue;
-            //}
             fishs.add(one);
             map[one.x][one.y] += 1;
         }
+        /*System.out.println("copyMagic_done---------");
+        for(int i=0; i<4; i++){
+            for(int j=0; j<4; j++){
+                System.out.print(map[i][j]+" ");
+            }
+            System.out.println();
+        }
+        System.out.println();*/
     }
     static class Fish{
         int x;
