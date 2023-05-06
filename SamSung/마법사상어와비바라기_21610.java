@@ -39,10 +39,10 @@ public class 마법사상어와비바라기_21610 {
             int si = Integer.parseInt(st.nextToken());
 
             cloudMove(di,si);
-            /*waterPlus();
-            cloudReset();
+            waterPlus();
+            //cloudReset();
             waterCopyMagic();
-            cloudCreate();*/
+            cloudCreate();
 
         }
         int sum =0;
@@ -61,6 +61,7 @@ public class 마법사상어와비바라기_21610 {
         int y = dy[di-1];
 
         boolean[][] temp_cloud = new boolean[N][N];
+        boolean[][] copy_cloud = new boolean[N][N];
         for(int i=0; i<N; i++){
             for(int j=0; j<N; j++){
                 temp_cloud[i][j] = cloud_is[i][j];
@@ -88,11 +89,70 @@ public class 마법사상어와비바라기_21610 {
 
                     }
 
-                    cloud_is[i][j] = false;
-                    cloud_is[nextX][nextY] = true;
+                    //cloud_is[i][j] = false;
+                    copy_cloud[nextX][nextY] = true;
+                }
+            }
+        }
+        for(int i=0; i<N; i++){
+            for(int j=0; j<N; j++){
+                cloud_is[i][j] = copy_cloud[i][j];
+            }
+        }
+
+    }
+    static void waterPlus(){
+        for(int i=0; i<N; i++){
+            for(int j=0; j<N; j++){
+                if(cloud_is[i][j]){
+                    A[i][j] += 1;
                 }
             }
         }
     }
 
+    static void waterCopyMagic(){
+        int [] dx = {-1,-1,1,1};
+        int [] dy = {-1,1,1,-1};
+        for(int i=0; i<N; i++){
+            for(int j=0; j<N; j++){
+                if(cloud_is[i][j]){
+                    int count = 0;
+                    for(int k=0; k<4; k++){
+                        int nextX = i+dx[k];
+                        int nextY = j+dy[k];
+                        if(nextX < 0 || nextX >= N || nextY < 0 || nextY >= N){
+                            continue;
+                        }
+                        if(A[nextX][nextY] > 0){
+                            count++;
+                        }
+                    }
+                    A[i][j] += count;
+                }
+            }
+        }
+    }
+
+    static void cloudCreate(){
+        boolean temp[][] = new boolean[N][N];
+
+        for(int i=0; i<N; i++) {
+            for (int j = 0; j < N; j++) {
+                temp[i][j] = cloud_is[i][j];
+            }
+        }
+
+        for(int i=0; i<N; i++){
+            for(int j=0; j<N; j++){
+                if(!temp[i][j] && A[i][j] >= 2){
+                    cloud_is[i][j] = true;
+                    A[i][j] -= 2;
+                }
+                else if(temp[i][j]){
+                    cloud_is[i][j] = false;
+                }
+            }
+        }
+    }
 }
