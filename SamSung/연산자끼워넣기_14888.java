@@ -30,9 +30,7 @@ public class 연산자끼워넣기_14888 {
         for(int i=0; i<4; i++){
             operator[i] = Integer.parseInt(st.nextToken());
         }
-            bfs(0,a,A[0],visited);
-
-
+        bfs(0,a,A[0],visited);
 
         System.out.println(max);
         System.out.println(min);
@@ -64,7 +62,7 @@ public class 연산자끼워넣기_14888 {
                 queue.add(next);
                 visited[next] = true;
             }
-        while(!queue.isEmpty()){
+            while(!queue.isEmpty()){
                 int now = queue.poll();
                 int ss = sum;
                 operator[next] -= 1;
@@ -79,20 +77,15 @@ public class 연산자끼워넣기_14888 {
                         sum *= A[depth+1];
                         break;
                     case 3:
-                        if(sum<0){
-                            int SUM = Math.abs(sum)/A[depth+1];
-                            sum = SUM * (-1);
-                        }
                         sum /= A[depth+1];
                         break;
                 }
                 bfs(depth+1,next, sum,visited);
 
                 operator[next] += 1;
-                //oper += 1;
+
                 sum = ss;
-        }
+            }
         }
     }
-
 }
