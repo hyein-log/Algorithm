@@ -9,18 +9,15 @@ import java.util.StringTokenizer;
 
 public class 연산자끼워넣기_14888_1 {
     static int N, max = Integer.MIN_VALUE, min = Integer.MAX_VALUE;
-    static int a = 0;
     static  int[] A;
     //+ - * /
     static int[] operator;
-    static boolean[] visited;
     static Queue<Integer> queue = new LinkedList<>();
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         N = Integer.parseInt(br.readLine());
         A = new int[N];
         operator = new int[4];
-        visited = new boolean[4];
         StringTokenizer st = new StringTokenizer(br.readLine()," ");
 
         for(int i=0; i<N; i++){
@@ -30,7 +27,7 @@ public class 연산자끼워넣기_14888_1 {
         for(int i=0; i<4; i++){
             operator[i] = Integer.parseInt(st.nextToken());
         }
-            bfs(0,a,A[0],visited);
+            bfs(0,A[0]);
 
 
 
@@ -38,8 +35,7 @@ public class 연산자끼워넣기_14888_1 {
         System.out.println(min);
     }
 
-    static void bfs(int depth, int oper , int sum, boolean[] visited){
-        visited = new boolean[4];
+    static void bfs(int depth , int sum){
         if(depth >= N-1){
             if(max < sum){
                 max = sum;
@@ -69,7 +65,7 @@ public class 연산자끼워넣기_14888_1 {
                             sum /= A[depth + 1];
                             break;
                     }
-                    bfs(depth + 1, i, sum, visited);
+                    bfs(depth + 1, sum);
 
                     operator[i] += 1;
 
